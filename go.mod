@@ -2,7 +2,7 @@ module github.com/olehmushka/word-generator
 
 go 1.18
 
-require github.com/olehmushka/golang-toolkit v0.1.0
+require github.com/olehmushka/golang-toolkit v0.1.2
 
 require (
 	github.com/google/uuid v1.3.0 // indirect

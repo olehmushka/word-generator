@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	list "github.com/olehmushka/golang-toolkit/list"
 	sliceTools "github.com/olehmushka/golang-toolkit/slice_tools"
 	stringTools "github.com/olehmushka/golang-toolkit/string_tools"
 	"github.com/olehmushka/golang-toolkit/wrapped_error"
@@ -12,17 +13,45 @@ import (
 
 type Chain map[string][]string
 
-func AppendByBase(chains map[string]Chain, base string, el Chain) map[string]Chain {
-	if len(chains) == 0 {
-		chains = make(map[string]Chain)
+type ChainBasePair struct {
+	BaseName string
+	Chain    Chain
+}
+
+func newChains() *list.FIFOUniqueList[*ChainBasePair] {
+	return list.NewFIFOUniqueList(MaxChainsCount, func(left, right *ChainBasePair) bool {
+		if left == nil && right == nil {
+			return true
+		}
+		if left == nil || right == nil {
+			return false
+		}
+
+		return left.BaseName == right.BaseName
+	})
+}
+
+func AppendByBase(chains *list.FIFOUniqueList[*ChainBasePair], base string, el Chain) *list.FIFOUniqueList[*ChainBasePair] {
+	if chains.Size == 0 {
+		chains = newChains()
 	}
 
-	chain, ok := chains[base]
-	if !ok {
-		chains[base] = el
+	chain, isFound := chains.FindOne(func(_, curr, _ *ChainBasePair) bool {
+		return curr.BaseName == base
+	})
+	if !isFound {
+		chains.Push(&ChainBasePair{
+			BaseName: base,
+			Chain:    el,
+		})
+
 		return chains
 	}
-	chains[base] = mergeChains(chain, el)
+	chains.Push(&ChainBasePair{
+		BaseName: base,
+		Chain:    mergeChains(chain.Chain, el),
+	})
+
 	return chains
 }
 
@@ -109,7 +138,7 @@ func CalculateChain(baseWords []string) (Chain, error) {
 	return chain, nil
 }
 
-func UpdateChain(baseName string, baseWords []string, chains map[string]Chain) (map[string]Chain, error) {
+func UpdateChain(baseName string, baseWords []string, chains *list.FIFOUniqueList[*ChainBasePair]) (*list.FIFOUniqueList[*ChainBasePair], error) {
 	if len(baseWords) == 0 {
 		return nil, wrapped_error.NewBadRequestError(nil, fmt.Sprintf("base words is empty (base_name=%s)", baseName))
 	}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	list "github.com/olehmushka/golang-toolkit/list"
 	randomTools "github.com/olehmushka/golang-toolkit/random_tools"
 	sliceTools "github.com/olehmushka/golang-toolkit/slice_tools"
 	stringTools "github.com/olehmushka/golang-toolkit/string_tools"
@@ -11,11 +12,13 @@ import (
 )
 
 type generator struct {
-	chains map[string]Chain
+	chains *list.FIFOUniqueList[*ChainBasePair]
 }
 
 func New() Generator {
-	return &generator{}
+	return &generator{
+		chains: newChains(),
+	}
 }
 
 type GenerateOpts struct {
@@ -34,13 +37,16 @@ func (g *generator) Generate(opts GenerateOpts) (string, error) {
 	var err error
 	var data Chain
 	for i := 0; i < 20; i++ {
-		var ok bool
-		if data, ok = g.chains[opts.BaseName]; !ok {
+		d, isFound := g.chains.FindOne(func(_, curr, _ *ChainBasePair) bool {
+			return curr.BaseName == opts.BaseName
+		})
+		if !isFound {
 			if err := g.updateChains(opts.BaseName, opts.BaseWords); err != nil {
 				return "", err
 			}
 			continue
 		}
+		data = d.Chain
 		break
 	}
 
