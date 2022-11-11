@@ -1,7 +1,9 @@
 github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/olehmushka/golang-toolkit v0.1.2 h1:skjjBQ+Ein0z49wugCF8nNqmN5ADQGoA8PaDBWqM8qU=
-github.com/olehmushka/golang-toolkit v0.1.2/go.mod h1:pEKNkKQOkUHyLzNyFeN2Lrnb8FtgOQeQQuC8Kalw4kw=
+github.com/matoous/go-nanoid v1.5.0 h1:VRorl6uCngneC4oUQqOYtO3S0H5QKFtKuKycFG3euek=
+github.com/matoous/go-nanoid v1.5.0/go.mod h1:zyD2a71IubI24efhpvkJz+ZwfwagzgSO6UNiFsZKN7U=
+github.com/olehmushka/golang-toolkit v0.2.4 h1:Y1dR5kcjbQVh8qUuCmm8IQbm6GaVgX4n0ezd+7OnjU0=
+github.com/olehmushka/golang-toolkit v0.2.4/go.mod h1:TivXQXAIb8MLPLAlB23WZECZa2ZfTDi9x0hU+iTapWI=
 golang.org/x/exp v0.0.0-20221026153819-32f3d567a233 h1:9bNbSKT4RPLEzne0Xh1v3NaNecsa1DKjkOuTbY6V9rI=
 golang.org/x/exp v0.0.0-20221026153819-32f3d567a233/go.mod h1:CxIveKay+FTh1D0yPZemJVgC/95VzuuOLq5Qi4xnoYc=
 golang.org/x/text v0.4.0 h1:BrVqGRd7+k1DiOgtnFvAkoQEWQvBc25ouMJM6429SFg=
